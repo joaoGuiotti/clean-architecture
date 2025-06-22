@@ -35,4 +35,71 @@ describe('Customer E2E Tests', () => {
         });
     });
 
+    it('should not create a customer with empty name', async () => {
+        const response = await request(app)
+            .post('/customers')
+            .send({
+                name: '',
+                address: {
+                    street: 'Street',
+                    city: 'City',
+                    number: 123,
+                    zip: '12345'
+                }
+            });
+        expect(response.status).toBe(500);
+    });
+
+    it('should list all customers', async () => {
+        const customers = [
+            {
+                name: 'John Doe',
+                address: {
+                    street: 'Street',
+                    city: 'City',
+                    number: 123,
+                    zip: '12345'
+                }
+            },
+            {
+                name: 'Jane Smith',
+                address: {
+                    street: 'Another Street',
+                    city: 'Another City',
+                    number: 456,
+                    zip: '67890'
+                }
+            }
+        ];
+        for (const customer of customers) {
+            await request(app)
+                .post('/customers')
+                .send(customer);
+        }
+
+        const response = await request(app)
+            .get('/customers');
+
+        expect(response.status).toBe(200);
+        expect(response.body.customers.length).toBe(2);
+        expect(response.body.customers[0]).toMatchObject({
+            name: 'John Doe',
+            address: {
+                street: 'Street',
+                city: 'City',
+                number: 123,
+                zipCode: '12345'
+            },
+        });
+        expect(response.body.customers[1]).toMatchObject({
+            name: 'Jane Smith',
+            address: {
+                street: 'Another Street',
+                city: 'Another City',
+                number: 456,
+                zipCode: '67890'
+            },
+        });
+    });
+
 });
