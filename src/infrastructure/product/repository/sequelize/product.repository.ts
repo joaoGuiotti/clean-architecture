@@ -13,6 +13,15 @@ export default class ProductRepository
         });
     }
 
+    async bulkCreate(entities: Product[]): Promise<void> {
+        const products = entities.map((entity) => ({
+            id: entity.id,
+            name: entity.name,
+            price: entity.price,
+        }));
+        await ProductModel.bulkCreate(products);
+    }
+
     async update(entity: Product): Promise<void> {
         await ProductModel.update({
             name: entity.name,
@@ -28,6 +37,9 @@ export default class ProductRepository
         const model = await ProductModel.findOne({
             where: { id }
         });
+        if (!model) {
+            throw new Error('Product not found');
+        }
         return new Product(model.id, model.name, model.price);
     }
 

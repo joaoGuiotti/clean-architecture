@@ -14,15 +14,15 @@ export class ProductFactory<TBuild = any> {
   private countObjs: number;
 
   static aProduct() {
-    return new ProductFactory<IProduct>().withType('A');
+    return new ProductFactory<Product>().withType('A');
   }
 
   static aProductB() {
-    return new ProductFactory<IProduct>().withType('B');
+    return new ProductFactory<ProductB>().withType('B');
   }
 
   static theProducts(countObjs: number) {
-    return new ProductFactory<IProduct[]>(countObjs);
+    return new ProductFactory<Product[]>(countObjs).withType('A');
   }
 
   private constructor(countObjs: number = 1) {
