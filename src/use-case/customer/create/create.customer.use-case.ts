@@ -1,9 +1,7 @@
-import { v4 as uuid } from "uuid";
 import ICustomerRepository from "../../../domain/customer/repository/customer-repository.interface";
 import { InputCreateCustomerDto, OutputCreateCustomerDto } from "./create.customer.dto";
 import CustomerFactory from "../../../domain/customer/factory/customer.factory";
 import Address from "../../../domain/customer/value-object/address";
-
 
 export default class CreateCustomerUseCase {
     private readonly customerRepository: ICustomerRepository;
