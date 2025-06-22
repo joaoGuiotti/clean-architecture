@@ -83,7 +83,7 @@ export default class Customer {
         return {
             id: this._id,
             name: this._name,
-            address: this._address,
+            address: this._address.toJSON(),
             active: this._active,
             rewardPoints: this._rewardPoints,
         }
