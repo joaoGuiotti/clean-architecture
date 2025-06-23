@@ -1,16 +1,23 @@
+import Entity from "../../shared/entity/entity.abstract";
+import NotificationError from "../../shared/notification/notification.error";
+
 // type VO: Value Object
-export default class Address {
+export default class Address extends Entity {
     private _street: string;
     private _number: number;
     private _zip: string;
     private _city: string;
 
     constructor(street: string, number: number, zip: string, city: string) {
+        super();
         this._street = street;
         this._number = number;
         this._zip = zip;
         this._city = city;
         this.validate();
+        if (this.notification.hasErrors()) {
+            throw new NotificationError(this.notification.errors);
+        }
     }
 
     get street(): string {
@@ -31,17 +38,17 @@ export default class Address {
 
     validate() {
         if (this._street.length === 0) {
-            throw new Error('Street is required');
+            this.notification.addError({ message: 'Street is required', context: 'Address' });
         }
         if (this._number <= 0) {
-            throw new Error('Number must be greater than zero');
+            this.notification.addError({ message: 'Number must be greater than zero', context: 'Address' });
         }
         if (this._zip.length === 0) {
-            throw new Error('Zip is required');
+            this.notification.addError({ message: 'Zip is required', context: 'Address' });
         }
         if (this._city.length === 0) {
-            throw new Error('City is required');
-        }
+            this.notification.addError({ message: 'City is required', context: 'Address' });
+        } 
     }
 
     toString(): string {

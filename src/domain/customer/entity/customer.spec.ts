@@ -4,8 +4,8 @@ import Customer from "./customer";
 describe('Customer Unit Entity', () => {
     it('should thow an error if id is empty', () => {
         expect(() => {
-            new Customer('', 'John Doe');
-        }).toThrow('Id is required');
+            let customer = new Customer('', 'John Doe');
+        }).toThrow('customer: Id is required');
     });
 
     it('should thow an error if name is empty', () => {
