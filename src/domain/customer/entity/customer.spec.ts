@@ -5,7 +5,7 @@ describe('Customer Unit Entity', () => {
     it('should thow an error if id is empty', () => {
         expect(() => {
             let customer = new Customer('', 'John Doe');
-        }).toThrow('customer: Id is required');
+        }).toThrow('Customer: Id is required');
     });
 
     it('should thow an error if name is empty', () => {

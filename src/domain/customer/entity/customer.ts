@@ -5,7 +5,7 @@
 // foco em negócio
 
 import Entity from "../../shared/entity/entity.abstract";
-import NotificationError from "../../shared/notification/notification.error";
+import CustomerValidatorFactory from "../factory/customer.validator.factory";
 import Address from "../value-object/address";
 
 export default class Customer extends Entity {
@@ -19,10 +19,6 @@ export default class Customer extends Entity {
         this._id = id;
         this._name = name;
         this.validate();
-
-        if (this.notification.hasErrors()) {
-            throw new NotificationError(this.notification.errors);
-        }
     }
 
     changeName(name: string): void {
@@ -48,10 +44,8 @@ export default class Customer extends Entity {
     }
 
     activate(): void {
-        if (this._address === undefined) {
-            throw new Error('Address is required to activate a customer');
-        }
         this._active = true;
+        this.validate();
     }
 
     get address(): Address {
@@ -63,31 +57,12 @@ export default class Customer extends Entity {
     }
 
     addRewardPoints(points: number) {
-        if (points <= 0) {
-            throw new Error('Points must be greater than zero');
-        }
         this._rewardPoints += points;
+        this.validate();
     }
 
     validate() {
-        if (this._id.length === 0) {
-            this.notification.addError({
-                context: 'customer',
-                message: 'Id is required',
-            });
-        }
-        if (this._name.length === 0) {
-            this.notification.addError({
-                context: 'customer',
-                message: 'Name is required',
-            });
-        }
-        if (this._address) {
-            this._address.validate();
-            if (this._address.notification.hasErrors()) {
-                this.notification.copyErrors(this._address.notification);
-            }
-        }
+        CustomerValidatorFactory.create().validate(this);
     }
 
     toJSON() {

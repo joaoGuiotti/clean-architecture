@@ -6,7 +6,7 @@ export type NotificationErrorProps = {
 export default class Notification {
     private readonly _errors = new Map<string, string[]>();
 
-    get errors(): NotificationErrorProps[] {
+    getErrors(): NotificationErrorProps[] {
         return Array.from(this._errors.entries()).flatMap(([context, messages]) =>
             messages.map(message => ({ message, context }))
         );

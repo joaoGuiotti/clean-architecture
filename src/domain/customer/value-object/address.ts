@@ -16,7 +16,7 @@ export default class Address extends Entity {
         this._city = city;
         this.validate();
         if (this.notification.hasErrors()) {
-            throw new NotificationError(this.notification.errors);
+            throw new NotificationError(this.notification.getMessagesNormalized());
         }
     }
 

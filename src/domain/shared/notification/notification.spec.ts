@@ -81,7 +81,7 @@ describe('Notification Unit Tests', () => {
         notification.addError(error1);
         notification.addError(error2);
 
-        const errorsProps = notification.errors;
+        const errorsProps = notification.getErrors();
         expect(errorsProps).toEqual([
             { message: 'First error message', context: 'customer' },
             { message: 'Second error message', context: 'order' },
