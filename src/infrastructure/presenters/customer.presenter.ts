@@ -5,7 +5,7 @@ import { OutputListCustomerDto } from "../../use-case/customer/list/list.custome
 export default class CustomerPresenter {
 
     static toListXML(data: OutputListCustomerDto): string {
-        const xmlOption = {
+        const xmlOptions = {
             header: true,
             indent: "  ",
             newline: "\n",
@@ -27,7 +27,7 @@ export default class CustomerPresenter {
                     })),
                 },
             },
-            xmlOption
+            xmlOptions
         );
     }
 
