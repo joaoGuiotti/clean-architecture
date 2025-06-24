@@ -1,12 +1,14 @@
+import Entity from "../../shared/entity/entity.abstract";
+import OrderItemFactoryValidaitor from "../factory/order-item.factory.validator";
 
-export default class OrderItem {
-    private _id: string;
+export default class OrderItem extends Entity {
     private _productId: string;
     private _name: string;
     private _price: number;
     private _quantity: number;
 
     constructor(id: string, name: string, price: number, productId: string, quantity: number) {
+        super();
         this._id = id;
         this._name = name;
         this._price = price;
@@ -16,18 +18,7 @@ export default class OrderItem {
     }
 
     validate() {
-        if (this._id.length === 0) {
-            throw new Error('Id is required');
-        }
-        if (this._name.length === 0) {
-            throw new Error('Name is required');
-        }
-        if (this._price <= 0) {
-            throw new Error('Price must be greater than zero');
-        }
-        if (this._quantity <= 0) {
-            throw new Error('Quantity must be greater than zero');
-        }
+        OrderItemFactoryValidaitor.create().validate(this);
     }
 
     get id(): string {

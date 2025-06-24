@@ -41,9 +41,10 @@ describe('Order Unit Test', () => {
     });
 
     it('should validate a valid order', () => {
-        const item = new OrderItem('1', 'item', 10, 'p1', 1);
-        const order = new Order('o3', 'c3', [item]);
-        expect(order.validate()).toBe(true);
+        expect(() => {
+            const item = new OrderItem('1', 'item', 10, 'p1', 1);
+            const order = new Order('o3', 'c3', [item]);
+        }).not.toThrow();
     });
 
 });

@@ -1,12 +1,14 @@
+import Entity from "../../shared/entity/entity.abstract";
+import OrderFactoryValidator from "../factory/order.factory.validator";
 import OrderItem from "./order-item";
 
-export default class Order {
-    private _id: string;
+export default class Order extends Entity {
     private _customerId: string;
     private _items: OrderItem[] = [];
     private _total: number;
 
     constructor(id: string, customerId: string, items: OrderItem[]) {
+        super();
         this._id = id;
         this._customerId = customerId;
         this._items = items;
@@ -34,17 +36,18 @@ export default class Order {
         this._items = items;
     }
 
-    validate(): boolean {
-        if (this._id.length === 0) {
-            throw new Error('Id is required');
-        }
-        if (this._customerId.length === 0) {
-            throw new Error('CustomerId is required');
-        }
-        if (this.items && this.items?.length === 0) {
-            throw new Error('Items length must be greater than 0');
-        }
-        return true;
+    validate() {
+        OrderFactoryValidator.create().validate(this);
+        // if (this._id.length === 0) {
+        //     throw new Error('Id is required');
+        // }
+        // if (this._customerId.length === 0) {
+        //     throw new Error('CustomerId is required');
+        // }
+        // if (this.items && this.items?.length === 0) {
+        //     throw new Error('Items length must be greater than 0');
+        // }
+        // return true;
     }
 
     toJSON() {
