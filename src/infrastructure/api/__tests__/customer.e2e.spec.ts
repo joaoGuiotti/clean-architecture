@@ -1,8 +1,8 @@
 
 import { app, sequelize } from "../express";
 import request from "supertest";
-describe('Customer E2E Tests', () => {
 
+describe('Customer E2E Tests', () => {
     beforeEach(async () => {
         await sequelize.sync({ force: true });
     });
@@ -102,4 +102,51 @@ describe('Customer E2E Tests', () => {
         });
     });
 
+    describe('response in XML', () => {
+
+        beforeEach(async () => {
+            const customers = [
+                {
+                    name: 'John Doe',
+                    address: {
+                        street: 'Street',
+                        city: 'City',
+                        number: 123,
+                        zip: '12345'
+                    }
+                },
+                {
+                    name: 'Jane Smith',
+                    address: {
+                        street: 'Another Street',
+                        city: 'Another City',
+                        number: 456,
+                        zip: '67890'
+                    }
+                }
+            ];
+            for (const customer of customers) {
+                await request(app)
+                    .post('/customers')
+                    .send(customer);
+            }
+        });
+
+        it('should return all customer in XML format', async () => {
+            const listResponseXML = await request(app)
+                .get('/customers')
+                .set('Accept', 'application/xml')
+                .send();
+            expect(listResponseXML.status).toBe(200);
+            expect(listResponseXML.text).toContain(`<?xml version="1.0" encoding="UTF-8"?>`)
+            expect(listResponseXML.text).toContain(`<name>John Doe</name>`);
+            expect(listResponseXML.text).toContain(`<address>`);
+            expect(listResponseXML.text).toContain(`<street>Street</street>`);
+            expect(listResponseXML.text).toContain(`<city>City</city>`);
+            expect(listResponseXML.text).toContain(`<number>123</number>`);
+            expect(listResponseXML.text).toContain(`<zipCode>12345</zipCode>`);
+            expect(listResponseXML.text).toContain(`</address>`);
+            expect(listResponseXML.text).toContain(`<name>Jane Smith</name>`);
+        });
+    });
 });
